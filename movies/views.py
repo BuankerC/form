@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import MovieForm, MovieModelForm
+from .forms import MovieForm, MovieModelForm, CommentModelForm
 from IPython import embed
 from .models import Movie
 # Create your views here.
 
 
 def index(request):
-    movies = Movie.objects.all()
+    movies = Movie.objects.all().order_by('-id')
     context = {
         'movies': movies
     }
@@ -16,8 +16,10 @@ def index(request):
 def detail(request, id):
     # movie = Movie.objects.get(id=id)
     movie = get_object_or_404(Movie, id=id)
+    comment_form = CommentModelForm()
     context = {
-        'movie': movie
+        'movie': movie,
+        'comment_form': comment_form
     }
     return render(request, 'detail.html', context)
 
@@ -113,3 +115,18 @@ def update_model_form(request, id):
         'form': form
     }
     return render(request, 'form.html', context)
+
+
+def comment_create(request, id):
+    movie = get_object_or_404(Movie, id=id)
+    if request.method == "POST":
+        form = CommentModelForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.movie = movie
+            comment.save()
+            return redirect('movies:detail', id)
+        else:
+            pass
+    else:
+        pass

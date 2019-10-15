@@ -12,5 +12,7 @@ urlpatterns = [
 
     path('create-model-form/', views.create_model_form, name="create_model_form"),
     path('<int:id>/update-model-form/',
-         views.update_model_form, name="update_model_form")
+         views.update_model_form, name="update_model_form"),
+
+    path('<int:id>/comments/create', views.comment_create, name="comment_create"),
 ]
