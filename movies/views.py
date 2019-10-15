@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import MovieForm
+from .forms import MovieForm, MovieModelForm
 from IPython import embed
 from .models import Movie
 # Create your views here.
@@ -79,6 +79,36 @@ def update(request, id):
 
     else:
         form = MovieForm(initial=movie.__dict__)
+    context = {
+        'form': form
+    }
+    return render(request, 'form.html', context)
+
+
+def create_model_form(request):
+    if request.method == "POST":
+        form = MovieModelForm(request.POST)
+        if form.is_valid():
+            movie = form.save()
+            return redirect('movies:detail', movie.id)
+    else:
+        form = MovieModelForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'form.html', context)
+
+
+def update_model_form(request, id):
+    movie = get_object_or_404(Movie, id=id)
+    if request.method == "POST":
+        form = MovieModelForm(request.POST, instance=movie)
+        if form.is_valid():
+            form.save()
+            return redirect('movies:detail', id)
+    else:
+        form = MovieModelForm(instance=movie)
+
     context = {
         'form': form
     }
