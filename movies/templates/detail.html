@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block body %}
+<h2>영화 제목: {{movie.title}}</h2>
+<h2>영어 제목: {{movie.title_en}}</h2>
+<h2>누적 관객수: {{movie.audience}}</h2>
+<h2>개봉일: {{movie.open_date}}</h2>
+<h2>장르: {{movie.genre}}</h2>
+<h2>관람등급: {{movie.watch_grade}}</h2>
+<h2>평점: {{movie.score}}</h2>
+<h2>포스터 이미지: {{movie.poster_url}}</h2>
+<h2>영화 소개: {{movie.description}}</h2>
+{% comment %}
+<a href="{% url 'movies:delete' movie.id %}">삭제</a>
+{% endcomment %}
+
+<form action="{% url 'movies:delete' movie.id %}" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="삭제(POST)">
+</form>
+<a href="{% url 'movies:update' movie.id %}">수정</a>
+{% endblock %}
