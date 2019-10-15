@@ -63,8 +63,7 @@ def update(request, id):
     movie = get_object_or_404(Movie, id=id)
 
     if request.method == "POST":
-        movie.update()
-        return redirect
+        pass
     else:
         form = MovieForm(initial=movie.__dict__)
     context = {
