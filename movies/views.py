@@ -63,7 +63,20 @@ def update(request, id):
     movie = get_object_or_404(Movie, id=id)
 
     if request.method == "POST":
-        pass
+        form = MovieForm(request.POST)
+        if form.is_valid():
+            movie.title = form.cleaned_data.get('title')
+            movie.title_en = form.cleaned_data.get('title_en')
+            movie.audience = form.cleaned_data.get('audience')
+            movie.open_date = form.cleaned_data.get('open_date')
+            movie.genre = form.cleaned_data.get('genre')
+            movie.watch_grade = form.cleaned_data.get('watch_grade')
+            movie.score = form.cleaned_data.get('score')
+            movie.poster_url = form.cleaned_data.get('poster_url')
+            movie.description = form.cleaned_data.get('description')
+            movie.save()
+            return redirect('movies:detail', id)
+
     else:
         form = MovieForm(initial=movie.__dict__)
     context = {
